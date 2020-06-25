@@ -34,6 +34,49 @@ Evaluation is done by splitting the 100k dataset into 90% training and 10% test.
 
 Data Preparation - Looking at the original form vs. the pivoted form
 
-[Original]()
+The original dataset usually looks something like this. 
 
-[Pivoted]()
+![Original](https://github.com/jaotheboss/PyReco/blob/master/Original%20Data.png)
+
+The data would need to be pivoted as shown below:
+```
+data = pd.read_csv('ratings.csv')
+data.pivot_table(values = 'rating', index = 'userId', columns = 'movieId')
+```
+
+![Pivoted](https://github.com/jaotheboss/PyReco/blob/master/Pivoted%20Data.png)
+
+Afterwhich, the execution is simple:
+
+#### SVD Recommendation System
+```
+# for SVD recommendation system
+from PyReco import SVDRecommender    # importing the class
+
+recommender = SVDRecommender()       # creating an instant
+recommender.fit(train)               # fitting the system with whatever training data
+
+# for predicting the rating of an item from a user
+recommender.predict('user', 'item')  
+
+# for retrieving recommendations for a particular user
+recommender.reco('user')
+```
+
+#### Collaborative Filtering Recommendation System
+```
+# for SVD recommendation system
+from PyReco import CFRecommender          # importing the class
+
+recommender = CFRecommender('ubcf or ibcf')       # creating an instant
+recommender.fit(train)                    # fitting the system with whatever training data
+
+# for predicting the rating of an item from a user
+recommender.predict('user', 'item')  
+
+# for retrieving recommendations for a particular user
+recommender.reco('user')
+
+# for finding the top most similar item or user from the input item or user
+recommender.top_matches('user or item)
+```
