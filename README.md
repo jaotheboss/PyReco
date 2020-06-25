@@ -24,7 +24,7 @@ This module only requires modules that does not rely on C (in the sense that you
 
 ## Results:
 [Movielens (100k)](https://grouplens.org/datasets/movielens/100k/)|RMSE|MAE|Time (Fit)
--|-|-|-|-
+-|-|-|-
 SVD|0.92759|0.71361|45s
 kNN (UBCF/IBCF)|1.01870|0.78215|13s
 
