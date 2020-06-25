@@ -1,4 +1,4 @@
-from PyReco import SVDRecommender, CFRecommender
+from PyReco import SVDRecommender, CFRecommender, read_timer
 import pandas as pd
 import numpy as np
 import os
@@ -16,28 +16,30 @@ train, test = train_test_split(data, test_size = 0.1, random_state = 69)
 train = train.pivot_table(values = 'rating', index = 'userId', columns = 'movieId')
 test.reset_index(drop = True, inplace = True)
 
-recommender = CFRecommender('ubcf', verbose = True)
-recommender.fit(train, fill = 'mean', sim_engine = 'cosine') # fill = {'mean', 'zero', 'interpolate'}, sim_engine = {'cosine', 'euclidean', 'pearson'}
-recommender.predict(212, 1320, method = 'weighted') # method = {'mean', 'weighted'}
-recommender.reco(212)
-recommender.top_matches(212)
+# Evaluation
+recommender = CFRecommender('ubcf', verbose = False)
+recommender.fit(train, fill = 'zero', sim_engine = 'cosine') # fill = {'mean', 'zero', 'interpolate'}, sim_engine = {'cosine', 'euclidean', 'pearson'}
+y_pred = list(test[['userId', 'movieId']].apply(lambda row: recommender.predict(row[0], row[1], method = 'mean'), axis = 1))
+y_true = test['rating']
+evaluate(y_true, y_pred)
 
-for i in range(1, 11):
-       print(i)
-       recommender = SVDRecommender(verbose = True)
-       recommender.fit(train, method = 'fa', k = i)
-       y_pred = list(test[['userId', 'movieId']].apply(lambda row: recommender.predict(row[0], row[1]), axis = 1))
-       y_true = test['rating']
-       evaluate(y_true, y_pred)
-       print()
-
-"""
-OPTIMAL PARAMETERS
-SVDRecommender:
-{method: 'slice', k = 9,
-method: 'pca', k = 1,
-method: 'fa', k = NA}
-Best performance: RMSE = 0.92759, MAE = 0.71361
-
-
-"""
+# Grid-Search Evaluation
+parameters = {
+       'rec_fill': ['mean', 'zero', 'interpolate'],
+       'rec_sim_engine': ['cosine', 'euclidean', 'pearson'],
+       
+       'pred_method': ['mean', 'weighted']
+}
+import time
+for pred_method in parameters['pred_method']:
+       for rec_sim_engine in parameters['rec_sim_engine']:
+              for rec_fill in parameters['rec_fill']:
+                     print('Prediction Method:',pred_method, '\nSimilarity Engine:', rec_sim_engine, '\nFitting Fill Method:', rec_fill)
+                     start_time = time.time()
+                     recommender = CFRecommender('ubcf', verbose = False)
+                     recommender.fit(train, fill = rec_fill, sim_engine = rec_sim_engine)
+                     y_pred = list(test[['userId', 'movieId']].apply(lambda row: recommender.predict(row[0], row[1], method = pred_method), axis = 1))
+                     y_true = test['rating']
+                     evaluate(y_true, y_pred)
+                     end_time = time.time()
+                     print(read_timer(end_time - start_time), '\n')
