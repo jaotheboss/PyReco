@@ -23,10 +23,17 @@ This module only requires modules that does not rely on C (in the sense that you
 [pending explanation]
 
 ## Results:
-[Movielens (100k)](https://grouplens.org/datasets/movielens/100k/)|RMSE|MAE|Time (Fit)|Time (Prediction)
+[Movielens (100k)](https://grouplens.org/datasets/movielens/100k/)|RMSE|MAE|Time (Fit)
 -|-|-|-|-
-SVD|0.92759|0.71361|-|-
-kNN (UBCF/IBCF)|-|-|-|-
+SVD|0.92759|0.71361|45s
+kNN (UBCF/IBCF)|1.01870|0.78215|13s
+
+Evaluation is done by splitting the 100k dataset into 90% training and 10% test. The systems are then fitted with the 90% training data and evaluated based on the 10% test data.
 
 ## How to use:
-[pending instructions and pictures]
+
+Data Preparation - Looking at the original form vs. the pivoted form
+
+[Original]()
+
+[Pivoted]()
