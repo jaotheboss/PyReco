@@ -23,7 +23,10 @@ This module only requires modules that does not rely on C (in the sense that you
 [pending explanation]
 
 ## Results:
-[pending table]
+[Movielens (100k)](https://grouplens.org/datasets/movielens/100k/)|RMSE|MAE|Time (Fit)|Time (Prediction)
+-|-|-|-|-
+SVD|0.92759|0.71361|-|-
+kNN (UBCF/IBCF)|-|-|-|-
 
 ## How to use:
 [pending instructions and pictures]
