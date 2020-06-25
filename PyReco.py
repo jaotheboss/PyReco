@@ -1,35 +1,3 @@
-"""
-2 kinds of recommendation engines:
-
-Engine 1 = Collaborative Filtering
-
-1. User-Based Collaborative Filtering
-2. Item-Based Collaborative Filtering
-
-1. Compare users that have similar patterns. Recommend product to either based
-on the fact that similar people that are of the same kind also use that product.
-_DATASET: This requires pattern data of each user with relation to the item
-itself. For example, col_name = [user_id, product1, product2, ..., ] and each
-product could consist of whether or not the user used/likes the product
-
-2. For each product, look at its user base. Based on those that use this particular
-product, look at what is the next most used product among this user base. You can
-then recommend this particular product to those that are not using (from within the
-user base)
-_DATASET: Requires the same dataset as above.
-
-Engine 2 = Content Based
-
-Content based filtering looks at products and groups them based on their
-similarity. Top rated products, products that are similar and etc.
-_DATASET: dataset of the product itself and their portfolio
-
-References:
-https://towardsdatascience.com/how-to-build-a-simple-recommender-system-in-python-375093c3fb7d
-https://www.analyticsvidhya.com/blog/2018/06/comprehensive-guide-recommendation-engine-python/
-https://www.geeksforgeeks.org/python-implementation-of-movie-recommender-system/
-"""
-
 # needed for both
 import time
 import numpy as np                                                    # handling of arrays
@@ -345,42 +313,6 @@ class CFRecommender():
                      return result
               else:
                      raise AttributeError('Collaborative filtering method not recognised. Call for ubcf or ibcf.')
-
-              # if self.last_user_reco['user'] != user:          # apply memoisation
-              #        if self.verbose:
-              #               print('Crafting ratings vector...')
-              #        ratings_vector = [self.predict(user, i, method, k) for i in self.items]
-              #        self.last_user_reco['user'] = user
-              #        self.last_user_reco['vector'] = ratings_vector
-              # else:
-              #        ratings_vector = self.last_user_reco['vector']
-              
-              # newitem_mask_index = np.isnan(np.array(self.data)[user_index])
-              # result = [['Item', 'Rating']]
-              # if self.verbose:
-              #        print('Creating the recommendations list...')
-              # if repeat:
-              #        #item_rating = list(zip(self.items, ratings_vector)).sort(key = lambda x: x[1], reverse = True)
-              #        #for i in range(k):
-              #        #       result.append(list(item_rating[i]))
-              #        sort_index = np.argsort(ratings_vector)[::-1]
-              #        for i in range(k):
-              #               rating = ratings_vector[sort_index[i]]
-              #               item = self.items[sort_index[i]]
-              #               result.append([item, rating])
-              #        return result
-              # else:
-              #        ratings_vector = ratings_vector[newitem_mask_index]
-              #        item_list = self.items[newitem_mask_index]
-              #        #item_rating = list(zip(item_list, ratings_vector)).sort(key = lambda x: x[1], reverse = True)
-              #        #for i in range(k):
-              #        #       result.append(list(item_rating[i]))
-              #        sort_index = np.argsort(ratings_vector)[::-1]
-              #        for i in range(k):
-              #               rating = ratings_vector[sort_index[i]]
-              #               item = item_list[sort_index[i]]
-              #               result.append([item, rating])
-              #        return result
        
        def top_matches(self, useritem, k = 3):
               """
